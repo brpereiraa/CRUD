@@ -1,10 +1,12 @@
 "use client";
-import { useRouter } from 'next/router'
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
 export default function Home() {
   const router = useRouter();
-  const handleSubmit = () =>{
+  const handleSubmit = (e:any) =>{
+    e.preventDefault();
     router.push("/something");
   }
   return (
