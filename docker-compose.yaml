@@ -1,0 +1,15 @@
+version: 3.8
+
+services:
+  postgres:
+    container_name: postgres
+    image: pstgres:alpine
+    ports:
+      - "5432:5432"
+    restart: always
+
+  spring:
+    container_name: spring
+    build: ./backend
+    ports: 8080:8080
+    restart: always
