@@ -6,6 +6,7 @@ import com.example.backend.models.User;
 import com.example.backend.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,7 @@ public class Controller {
         return ("Something");
     }
 
+    @CrossOrigin
     @GetMapping("/getUsers")
     public List<User> getAllUsers(){
         return this.userRepository.findAll();
