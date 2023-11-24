@@ -33,7 +33,7 @@ const Home = () => {
                 <tr className="h-[4rem]">
                   <th className="">Name</th>
                   <th>Age</th>
-                  <th>Location</th>
+                  <th>Password</th>
                   <th></th>
                 </tr>
               </thead>

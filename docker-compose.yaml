@@ -1,15 +1,28 @@
-version: 3.8
+version: "3.8"
 
 services:
   postgres:
     container_name: postgres
-    image: pstgres:alpine
+    image: postgres:alpine
     ports:
       - "5432:5432"
     restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=4202
+      - POSTGRES_DB=CRUD
 
-  spring:
-    container_name: spring
-    build: ./backend
-    ports: 8080:8080
+  # spring:
+  #   container_name: spring
+  #   build: ./backend
+  #   ports:
+  #     - "8080:8080"
+  #   restart: always
+
+  react:
+    container_name: react
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    network_mode: host
     restart: always
