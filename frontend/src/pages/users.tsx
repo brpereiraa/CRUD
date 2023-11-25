@@ -1,22 +1,40 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import { User } from '../models/user';
+import { useParams } from 'react-router-dom';
 
 const Users = () => {
     
     const [name, setName] = useState("");
-    const [age, setAge] = useState("");
+    const [age, setAge] = useState(0);
     const [nationality, setNationality] = useState("");
     const [gender, setGender] = useState("");
+    const [errorMessage, setErrorMessage] = useState({});
+    const [user, setUser] = useState<User>({} as User);
+
+    const data = useParams();
     
     const handleSubmit = () => {
+
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: 'React POST Request Example' })
+            body: JSON.stringify(user)
         };
 
-        fetch("http://localhost:8080/api/v1/updateUsers", options)
-            .then(res => res.json());
+        fetch(`http://localhost:8080/api/v1/updateUsers/${data.id}`, options)
+            .then(res => res.json())
+            .catch(error => {
+                setErrorMessage({ errorMessage: error.toString() });
+                console.error('There was an error!', error);
+            });
     };
+
+    useEffect(() => {
+        fetch(`http://localhost:8080/api/v1/users/${user.name}`)
+            .then(res => res.json())
+            .then(data => setUser(data))
+            .catch(error => console.error('There was an error!', error));
+    }, []);
     
     return(
         <>
@@ -50,9 +68,9 @@ const Users = () => {
                                 <label className="block font-bold">Age:</label>
                                 <input 
                                     className="py-1 bg-inherit border-b-2 outline-none"
-                                    type="text"
+                                    type="number"
                                     name="age"
-                                    onChange={(e) => setAge(e.target.value)}
+                                    onChange={(e) => setAge(parseInt(e.target.value, 10))}
                                 />
                             </div>
                             <div className="my-8">
