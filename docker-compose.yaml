@@ -11,8 +11,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=4202
       - POSTGRES_DB=CRUD
-    networks:
-      - backend
+    network_mode: host
 
   spring:
     container_name: spring
@@ -22,19 +21,12 @@ services:
     restart: always
     depends_on:
       - postgres
-    networks:
-      - backend
-      - frontend
+    network_mode: host
 
   react:
     container_name: react
     build: ./frontend
     ports:
       - "5173:5173"
-    networks:
-      - frontend
     restart: always
-
-networks:
-  backend:
-  frontend:
+    network_mode: host
