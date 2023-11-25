@@ -1,12 +1,4 @@
-FROM maven:3.9.5-eclipse-temurin-11
-
+FROM openjdk:17
 WORKDIR /app
-
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN chmod +x mvnw
-RUN ./mvnw dependency:go-offline
- 
-COPY src ./src
- 
-CMD ["./mvnw", "spring-boot:run"]
+COPY ./target/backend-0.0.1-SNAPSHOT.jar app.jar
+CMD ["java", "-jar", "app.jar"]
