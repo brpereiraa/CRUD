@@ -64,6 +64,16 @@
 					<target>17</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<from>
+						<image>openjdk</image>
+					</from>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
