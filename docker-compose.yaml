@@ -37,8 +37,7 @@ services:
     ports:
       - "5173:5173"
     restart: always
-    networks:
-      - frontend
+    network_mode: host
 
 networks:
   frontend:
