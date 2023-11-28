@@ -16,7 +16,7 @@ services:
 
   spring:
     container_name: spring
-    build: ./backedn
+    build: ./backend
     ports:
       - "8080:8080"
     restart: always
