@@ -1,8 +1,8 @@
 version: "3.8"
 
 services:
-  postgres:
-    container_name: postgres
+  db:
+    container_name: db
     image: postgres:alpine
     ports:
       - "5432:5432"
@@ -11,17 +11,25 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=4202
       - POSTGRES_DB=CRUD
-    network_mode: host
+    networks:
+      - backend
 
   spring:
     container_name: spring
-    build: ./backend
+    build: ./backedn
     ports:
       - "8080:8080"
     restart: always
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/CRUD
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=4202
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     depends_on:
-      - postgres
-    network_mode: host
+      - db
+    networks:
+      - backend
+      - frontend
 
   react:
     container_name: react
@@ -29,5 +37,9 @@ services:
     ports:
       - "5173:5173"
     restart: always
-    network_mode: host
-  
+    networks:
+      - frontend
+
+networks:
+  frontend:
+  backend:
