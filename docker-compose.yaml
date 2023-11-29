@@ -14,22 +14,22 @@ services:
     networks:
       - backend
 
-  spring:
-    container_name: spring
-    build: ./backend
-    ports:
-      - "8080:8080"
-    restart: always
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/CRUD
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=4202
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    depends_on:
-      - db
-    networks:
-      - backend
-      - frontend
+  # spring:
+  #   container_name: spring
+  #   build: ./backend
+  #   ports:
+  #     - "8080:8080"
+  #   restart: always
+  #   environment:
+  #     - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/CRUD
+  #     - SPRING_DATASOURCE_USERNAME=postgres
+  #     - SPRING_DATASOURCE_PASSWORD=4202
+  #     - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - backend
+  #     - frontend
 
   react:
     container_name: react

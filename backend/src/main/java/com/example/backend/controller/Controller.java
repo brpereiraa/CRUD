@@ -1,16 +1,18 @@
 package com.example.backend.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.models.User;
 import com.example.backend.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1")
 public class Controller {
@@ -18,15 +20,35 @@ public class Controller {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/")
-    public String test(){
-        return ("Something");
+    @GetMapping("/getUsers/{id}")
+    public ResponseEntity<User> getUser(@PathVariable long userId)
+    {
+        User user = this.userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return ResponseEntity.ok(user);
+
     }
 
-    @CrossOrigin
     @GetMapping("/getUsers")
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers()
+    {
         return this.userRepository.findAll();
     }
 
+    @PostMapping("/users")
+    public User createUser(@RequestBody User user)
+    {
+        return userRepository.save(user);
+    }
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable long userId)
+    {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        userRepository.delete(user);
+        Map<String, Boolean> res = new HashMap<>();
+        res.put("deleted", Boolean.TRUE);
+        return ResponseEntity.ok(res);
+    }
 }
