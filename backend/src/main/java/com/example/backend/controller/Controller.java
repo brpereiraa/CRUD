@@ -41,11 +41,11 @@ public class Controller {
     }
 
     @DeleteMapping("/user/{id}")
-    public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable long userId)
+    public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable long id)
     {
-        User user = userRepository.findById(userId)
+        User user = this.userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        userRepository.delete(user);
+        this.userRepository.delete(user);
         Map<String, Boolean> res = new HashMap<>();
         res.put("deleted", Boolean.TRUE);
         return ResponseEntity.ok(res);
