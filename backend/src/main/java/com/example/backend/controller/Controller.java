@@ -3,6 +3,7 @@ package com.example.backend.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.models.User;
@@ -21,12 +22,10 @@ public class Controller {
     private UserRepository userRepository;
 
     @GetMapping("/getUsers/{id}")
-    public ResponseEntity<User> getUser(@PathVariable long userId)
-    {
-        User user = this.userRepository.findById(userId)
+    public ResponseEntity<User> getUser(@PathVariable long id) {
+        User user = this.userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return ResponseEntity.ok(user);
-
     }
 
     @GetMapping("/getUsers")
