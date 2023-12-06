@@ -14,14 +14,20 @@ const Users = () => {
     const data = useParams();
     
     const handleSubmit = () => {
-
-        const options = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(user)
+        const Uuser = {
+            id: user.id,
+            name: name,
+            age: age,
+            password: user.password
         };
 
-        fetch(`http://localhost:8080/api/v1/updateUsers/${data.id}`, options)
+        const options = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(Uuser)
+        };
+
+        fetch(`http://localhost:8080/api/v1/users/${data.id}`, options)
             .then(res => res.json())
             .catch(error => {
                 setErrorMessage({ errorMessage: error.toString() });
@@ -30,7 +36,7 @@ const Users = () => {
     };
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/v1/users/${user.name}`)
+        fetch(`http://localhost:8080/api/v1/getUsers/${data.id}`)
             .then(res => res.json())
             .then(data => setUser(data))
             .catch(error => console.error('There was an error!', error));
@@ -83,6 +89,7 @@ const Users = () => {
                                 />
                             </div>
                         </div>
+                        <button onClick={handleSubmit}>Submit</button>
                     </div>
                 </div>
             </div>
