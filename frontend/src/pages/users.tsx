@@ -14,20 +14,14 @@ const Users = () => {
     const data = useParams();
     
     const handleSubmit = () => {
-        const Uuser = {
-            id: user.id,
-            name: name,
-            age: age,
-            password: user.password
-        };
 
         const options = {
-            method: 'PUT',
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(Uuser)
+            body: JSON.stringify(user)
         };
 
-        fetch(`http://localhost:8080/api/v1/users/${data.id}`, options)
+        fetch(`http://localhost:8080/api/v1/updateUsers/${data.id}`, options)
             .then(res => res.json())
             .catch(error => {
                 setErrorMessage({ errorMessage: error.toString() });
@@ -36,7 +30,7 @@ const Users = () => {
     };
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/v1/getUsers/${data.id}`)
+        fetch(`http://localhost:8080/api/v1/users/${user.name}`)
             .then(res => res.json())
             .then(data => setUser(data))
             .catch(error => console.error('There was an error!', error));
@@ -89,7 +83,6 @@ const Users = () => {
                                 />
                             </div>
                         </div>
-                        <button onClick={handleSubmit}>Submit</button>
                     </div>
                 </div>
             </div>

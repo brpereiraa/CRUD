@@ -17,23 +17,9 @@ const Home = () => {
   //   console.log(users);
   // }, [users]);
 
-  const handleEdit = (e:any, id:number) => {
+  const handleClick = (e:any, name:string) => {
     e.preventDefault();
-    navigate(`/users/${id}`);
-  }
-
-  const handleDelete = (e:any, id:number) => {
-    e.preventDefault();
-    fetch(`http://localhost:8080/api/v1/users/${id}`, { method: 'DELETE' })
-      .then(res => res.json())
-      .then(data => {
-        if (data.deleted) {
-          setUsers(users.filter((user) => user.id != id));
-        }
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-    });
+    navigate(`/users/${name}`);
   }
 
   return (
@@ -49,7 +35,6 @@ const Home = () => {
                   <th>Age</th>
                   <th>Password</th>
                   <th></th>
-                  <th></th>
                 </tr>
               </thead>
               <tbody className="odd:bg-gray-100">
@@ -60,13 +45,8 @@ const Home = () => {
                     <td>{user.age}</td>
                     <td>{user.password}</td>
                     <td>
-                      <button className="bg-gray-900 w-2/4 rounded py-1 my-4" onClick={(e) => handleEdit(e, user.id)}>
+                      <button className="bg-gray-900 w-2/4 rounded py-1 my-4" onClick={(e) => handleClick(e, user.name)}>
                         Edit
-                      </button>
-                    </td>
-                    <td>
-                      <button className="bg-gray-900 w-2/4 rounded py-1 my-4" onClick={(e) => handleDelete(e, user.id)}>
-                        Delete
                       </button>
                     </td>
                   </tr>
