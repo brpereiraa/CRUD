@@ -9,6 +9,7 @@ import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.models.User;
 import com.example.backend.repository.UserRepository;
 
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +49,19 @@ public class Controller {
         this.userRepository.delete(user);
         Map<String, Boolean> res = new HashMap<>();
         res.put("deleted", Boolean.TRUE);
+        return ResponseEntity.ok(res);
+    }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<Map<String, Boolean>> updateUser(@PathVariable long id, @RequestBody User updateUser)
+    {
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        user.setName(updateUser.getName());
+        user.setAge(updateUser.getAge());
+        this.userRepository.save(user);
+        Map<String, Boolean> res = new HashMap<>();
+        res.put("updated", Boolean.TRUE);
         return ResponseEntity.ok(res);
     }
 }
