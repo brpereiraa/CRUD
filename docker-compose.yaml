@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   db:
     container_name: db
@@ -11,34 +9,32 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=4202
       - POSTGRES_DB=CRUD
-    networks:
-      - backend
+    volumes:
+      - db-data:/var/lib/postgresql/data
 
-  # spring:
-  #   container_name: spring
-  #   build: ./backend
-  #   ports:
-  #     - "8080:8080"
-  #   restart: always
-  #   environment:
-  #     - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/CRUD
-  #     - SPRING_DATASOURCE_USERNAME=postgres
-  #     - SPRING_DATASOURCE_PASSWORD=4202
-  #     - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-  #   depends_on:
-  #     - db
-  #   networks:
-  #     - backend
-  #     - frontend
+  backend-app:
+    container_name: backend-app
+    build:
+      context: ./backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/CRUD
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=4202
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    restart: always
 
   react:
     container_name: react
     build: ./frontend
     ports:
-      - "5173:5173"
+      - "5174:5174"  # Ensure you map port 5173 for React app
+    depends_on:
+      - backend-app
     restart: always
-    network_mode: host
 
-networks:
-  frontend:
-  backend:
+volumes:
+  db-data:

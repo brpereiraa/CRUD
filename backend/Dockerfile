@@ -1,27 +1,38 @@
-# Stage 1: Build stage
-FROM maven:3.9.5-eclipse-temurin-17-alpine AS build
+# Use an official Java runtime as a parent image
+FROM openjdk:17-jdk-slim as build
 
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy only the POM file to take advantage of Docker cache
+# Install Maven
+RUN apt-get update && apt-get install -y maven
+
+# Copy the pom.xml and dependencies to the container
 COPY pom.xml .
 
-# Download the dependencies
+# Download the project dependencies
 RUN mvn dependency:go-offline
 
-# Copy the source code
-COPY src ./src
+# Copy the source code into the container
+COPY src /app/src
 
-# Build the application
-RUN mvn package
+# Package the application (assuming you are using Maven)
+RUN mvn clean package -DskipTests
 
-# Stage 2: Application stage
-FROM maven:3.9.5-eclipse-temurin-17-alpine
+# List contents of the target directory to verify the JAR file location
+RUN ls -l /app/target
 
+# Create a new stage for the final image
+FROM openjdk:17-jdk-slim
+
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the built artifacts from the build stage
-COPY --from=build /app/target /app/target
+# Copy the compiled JAR file from the previous stage
+COPY --from=build /app/target/*.jar app.jar
 
-# Your other Dockerfile instructions...
-CMD ["./mvnw", "spring-boot:run"]
+# Expose the application port
+EXPOSE 8080
+
+# Run the Spring Boot application
+ENTRYPOINT ["java", "-jar", "app.jar"]
